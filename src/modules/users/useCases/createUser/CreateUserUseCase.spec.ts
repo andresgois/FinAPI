@@ -12,9 +12,14 @@ describe("Create user", () => {
     await connection.runMigrations();
 
     //const id = uuidV4();
-    console.log(connection)
+    //console.log(connection)
 
   });
+
+  afterAll( async () => {
+    await connection.dropDatabase();
+    await connection.close();
+  })
 
   it("Should be create a new user", async () => {
 

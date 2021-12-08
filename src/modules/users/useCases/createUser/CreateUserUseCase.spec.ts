@@ -10,10 +10,6 @@ describe("Create user", () => {
   beforeAll( async () => {
     connection = await createConnection();
     await connection.runMigrations();
-
-    //const id = uuidV4();
-    //console.log(connection)
-
   });
 
   afterAll( async () => {
@@ -30,19 +26,33 @@ describe("Create user", () => {
       password: "123456"
     });
 
-    console.log(response)
     expect(response.status).toBe(201);
-
   });
 
-  /*it("Should be create a new user", async () => {
-    const user = await createUserUseCase.execute({
-      name: "teste 1",
+  it("Should have a token property in the response", async () => {
+
+    const response = await request(app).post("/api/v1/sessions").send({
       email: "teste@email.com",
-      password: "123456",
+      password: "123456"
     });
 
-    expect(user).toBe(0)
-  });*/
+    expect(response.body).toHaveProperty("token");
+  });
+
+  it("Should be able show profile of user", async () => {
+    const responseToken = await request(app).post("/api/v1/sessions").send({
+      email: "teste@email.com",
+      password: "123456"
+    });
+    const { token } = responseToken.body;
+
+    const response = await request(app).get("/api/v1/profile")
+            .send()
+            .set({
+              Authorization: `Bearer ${token}`
+            });
+    //console.log(response.body);
+    expect(response.body).toMatchObject({email: "teste@email.com"});
+  });
 
 })

@@ -22,7 +22,10 @@ export class Statement {
   id?: string;
 
   @Column('uuid')
-  user_id: string;
+  user_id?: string;
+
+  @Column('uuid')
+  sender_id: string;
 
   @ManyToOne(() => User, user => user.statement)
   @JoinColumn({ name: 'user_id' })
@@ -30,9 +33,6 @@ export class Statement {
 
   @Column()
   description: string;
-
-  @Column({nullable: true})
-  sender_id?: string;
 
   @Column('decimal', { precision: 5, scale: 2 })
   amount: number;

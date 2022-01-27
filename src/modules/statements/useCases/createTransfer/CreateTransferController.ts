@@ -22,11 +22,11 @@ export class CreateTransferController {
     const createStatement = container.resolve(CreateTransferUseCase);
 
     const statement = await createStatement.execute({
-      user_id,
       sender_id,
-      type,
+      user_id,
       amount,
-      description
+      description,
+      type
     });
 
     return response.status(201).json(statement);

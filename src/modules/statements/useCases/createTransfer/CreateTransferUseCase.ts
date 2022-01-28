@@ -1,71 +1,62 @@
 import { inject, injectable } from "tsyringe";
-import { IUsersRepository } from "../../../users/repositories/IUsersRepository";
-import { IStatementsRepository } from "../../repositories/IStatementsRepository";
-import { CreateStatementError } from "../createStatement/CreateStatementError";
-import { CreateTransferError } from "./CreateTransferError";
+import { IUsersRepository } from "../../../../modules/users/repositories/IUsersRepository";
+import { IStatementsRepository } from "../../../../modules/statements/repositories/IStatementsRepository";
 import { ICreateTransferDTO } from "./ICreateTransferDTO";
+import { CreateTransferError } from "./CreateTransferError";
+import { OperationType } from "../../entities/Statement";
 
-
-enum OperationType {
+/*enum OperationType {
   DEPOSIT = 'deposit',
   WITHDRAW = 'withdraw',
   TRANSFER = 'transfer'
-}
-
+}*/
 @injectable()
-export class CreateTransferUseCase {
+class CreateTransferUseCase {
 
   constructor(
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
+
     @inject('StatementsRepository')
     private statementsRepository: IStatementsRepository
-  ){}
+  ) {}
 
-  async execute({  sender_id, user_id, amount, description, type }: ICreateTransferDTO){
+  async execute({ sender_id, receiver_id, amount, description }: ICreateTransferDTO ) {
+    const userSender = await this.usersRepository.findById(sender_id);
 
-    const userSender  = await this.usersRepository.findById(sender_id as string);  //pri
-    const receiverUser  = await this.usersRepository.findById(user_id as string);  // andre
-
-    if(!userSender ) {
-      throw new CreateStatementError.UserNotFound();
+    if(!userSender) {
+      throw new CreateTransferError.SenderNotFound();
     }
-    if(!receiverUser ) {
-      throw new CreateStatementError.UserNotFound();
-    }
-    console.log('PRI = userSender : ',userSender )
-    console.log('Andre = receiverUser : ',receiverUser )
+    const receiverUser = await this.usersRepository.findById(receiver_id)
 
-    //if(type === 'transfer') {
-    const userSenderAmount  = await this.statementsRepository.getUserBalance({user_id: sender_id as string, with_statement: false});
+    if(!receiverUser) {
+        throw new CreateTransferError.ReceiverNotFound();
+    }
+
+    const userSenderAmount = await this.statementsRepository.getUserBalance({user_id: sender_id, with_statement: false})
+
     if (amount > userSenderAmount.balance) {
-      throw new CreateTransferError.InsufficientFunds()
+        throw new CreateTransferError.InsufficientFunds()
     }
-    //}
-    console.log('userSenderAmount')
-    console.log(userSenderAmount)
 
-    const statementSender = await this.statementsRepository.create({
+    const t = await this.statementsRepository.create({
         user_id: sender_id,
         sender_id: sender_id,
         amount,
         description,
         type: OperationType.WITHDRAW
     })
-    console.log('statementSender')
-    console.log(statementSender)
 
     const transferOperation = await this.statementsRepository.create({
         user_id: receiverUser.id,
         sender_id: userSender.id,
         amount,
         description,
-        type,
+        type: OperationType.TRANSFER
     })
-    console.log('transferOperation===================')
-    console.log(transferOperation)
 
     return transferOperation;
   }
-
 }
+
+export { CreateTransferUseCase }

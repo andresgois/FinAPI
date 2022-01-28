@@ -1,12 +1,6 @@
-
-import { Statement } from "../../entities/Statement";
-
-export type ICreateTransferDTO =
-Pick<
-  Statement,
-  'user_id' |
-  'description' |
-  'amount' |
-  'type' |
-  'sender_id'
->
+export interface ICreateTransferDTO {
+  sender_id: string
+  receiver_id: string
+  description: string
+  amount: number
+}

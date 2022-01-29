@@ -42,7 +42,6 @@ describe("User income and expenses ", () => {
               Authorization: `Bearer ${token}`
             });
 
-    //console.log(response.body)
     expect(response.status).toBe(201)
     expect(response.body.type).toBe("deposit")
   });
@@ -65,7 +64,6 @@ describe("User income and expenses ", () => {
               Authorization: `Bearer ${token}`
             });
 
-    //console.log(response.body)
     expect(response.status).toBe(201)
     expect(response.body.type).toBe("withdraw")
   });

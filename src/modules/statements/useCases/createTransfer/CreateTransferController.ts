@@ -1,23 +1,22 @@
 import { Request, Response } from "express";
 import { container } from "tsyringe";
-import { CreateTransferUseCase } from "./CreateTransferUseCase";
+import { CreateTransfersUseCase } from "./CreateTransferUseCase";
 
 class CreateTransferController {
-    async handle(request: Request, response: Response) {
+    async execute(request: Request, response: Response): Promise<Response> {
 
         const { id: sender_id } = request.user
         const { receiver_id } = request.params
         const { amount, description } = request.body
 
-        const createTransferUseCase = container.resolve(CreateTransferUseCase)
+        const createTransferUseCase = container.resolve(CreateTransfersUseCase)
 
         const transfer = await createTransferUseCase.execute({
-            sender_id,
-            receiver_id,
-            amount,
-            description
+          amount,
+          description,
+          sender_id,
+          receiver_id
         })
-//https://github.com/luanrjjj/DesafioTestesUnit-rios/tree/main/src
         return response.status(201).json(transfer)
     }
 }

@@ -5,8 +5,8 @@
 - [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [Como baixar o projeto](#-como-baixar-o-projeto)
 - [Desenvolvimento](#-desencolvimento)
-- [Rotas da aplicação](#-Rotas-da-aplicação)
-- [Docker](#-Container-Docker)
+- [Rotas da aplicação](#-rotas-da-aplicação)
+- [Docker](#-container-docker)
 
 ## 📑 Sobre
 
@@ -60,10 +60,9 @@ Por padrão a aplicação roda no endereço http://localhost:3333.
 - [x] Não deve ser possível excluir uma conta não existente
 
 
-## Rotas da aplicação
+## ⚙️ Rotas da aplicação
 
 Para te ajudar a entender melhor o funcionamento da aplicação como um todo, abaixo você verá uma descrição de cada rota e quais parâmetros recebe.
-
 ### POST `/api/v1/users`
 
 A rota recebe `name`, `email` e `password` dentro do corpo da requisição, salva o usuário criado no banco e retorna uma resposta vazia com status `201`.
@@ -97,7 +96,7 @@ A rota recebe um token JWT pelo header e `amount` e `description` no corpo da re
 
 A rota recebe um token JWT pelo header e o id de uma operação registrada (saque ou depósito) na URL da rota e retorna as informações da operação encontrada.
 
-## Container Docker
+## 🐳 Container Docker
 - docker run --name fin_api -e POSTGRES_PASSWORD=docker -p 5432:5432 -d postgres
 
 

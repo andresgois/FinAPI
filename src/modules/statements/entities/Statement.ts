@@ -1,4 +1,11 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  PrimaryGeneratedColumn
+} from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 import { User } from '../../users/entities/User';
@@ -15,7 +22,7 @@ export class Statement {
   id?: string;
 
   @Column('uuid')
-  user_id?: string;
+  user_id: string;
 
   @Column('uuid')
   sender_id?: string;
@@ -23,6 +30,9 @@ export class Statement {
   @ManyToOne(() => User, user => user.statement)
   @JoinColumn({ name: 'user_id' })
   user: User;
+
+  @JoinColumn({ name: 'sender_id' })
+  sender?: User;
 
   @Column()
   description: string;

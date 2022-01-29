@@ -51,7 +51,6 @@ describe("Create user", () => {
             .set({
               Authorization: `Bearer ${token}`
             });
-    //console.log(response.body);
     expect(response.body).toMatchObject({email: "teste@email.com"});
   });
 

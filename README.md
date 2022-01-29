@@ -4,8 +4,8 @@
 - [Sobre](#-sobre)
 - [Tecnologias Utilizadas](#-tecnologias-utilizadas)
 - [Como baixar o projeto](#-como-baixar-o-projeto)
-- [Desenvolvimento](#-desencolvimento)
-- [Rotas da aplicação](#-rotas-da-aplicação)
+- [Desenvolvimento](#-desenvolvimento)
+- [Rotas da aplicação](#-rotas-da-aplicacao)
 - [Docker](#-container-docker)
 
 ## 📑 Sobre
